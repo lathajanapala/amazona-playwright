@@ -25,9 +25,10 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: amazona-playwright/package-lock.json
 
       - name: Install dependencies
-        run: npm install --no-fund --no-audit
+        run: npm ci --no-fund --no-audit
 
       - name: Check BASE_URL and connectivity
         id: envcheck
