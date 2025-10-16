@@ -1,0 +1,21 @@
+{
+  "name": "amazona-playwright",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright + TypeScript POM + API tests for Amazona",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:ui": "npx playwright test --grep @ui",
+    "test:api": "npx playwright test --grep @api",
+    "report": "npx playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "allure-playwright": "^2.13.0",
+    "typescript": "^5.6.3",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
