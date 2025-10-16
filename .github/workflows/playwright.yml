@@ -4,6 +4,7 @@ on:
   push:
     branches: [ main ]
   pull_request:
+  workflow_dispatch:
 
 jobs:
   test:
@@ -13,6 +14,8 @@ jobs:
         working-directory: amazona-playwright
     env:
       BASE_URL: ${{ secrets.BASE_URL }}
+      WEB_SERVER_CMD: ${{ vars.WEB_SERVER_CMD }}
+      WEB_SERVER_URL: ${{ vars.WEB_SERVER_URL }}
       USER_EMAIL: ${{ secrets.USER_EMAIL }}
       USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
 
@@ -30,11 +33,16 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-fund --no-audit
 
-      - name: Check BASE_URL and connectivity
+      - name: Resolve target and connectivity
         id: envcheck
         run: |
+          if [ -n "${WEB_SERVER_CMD}" ]; then
+            echo "Using WEB_SERVER_CMD to start local server via Playwright."
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           if [ -z "${BASE_URL}" ]; then
-            echo "::warning::BASE_URL secret not set. Skipping tests."
+            echo "::warning::Neither WEB_SERVER_CMD nor BASE_URL set. Skipping tests."
             echo "skip=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
